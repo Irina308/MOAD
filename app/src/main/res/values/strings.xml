@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">inf3moad</string>
+
+    <string-array name="currencies_view">
+        <item>EUR</item>
+        <item>USD</item>
+        <item>RUB</item>
+    </string-array>
 </resources>
