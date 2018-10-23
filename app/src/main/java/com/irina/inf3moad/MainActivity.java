@@ -25,8 +25,8 @@ public class MainActivity extends AppCompatActivity {
         Spinner toVal = findViewById(R.id.toVal_spn);
         double inputVal = Double.parseDouble(((EditText) findViewById(R.id.input_txt)).getText().toString());
 
-        String fromValSelectedItem =(String) fromVal.getSelectedItem();
-        String toValSelectedItem =(String) toVal.getSelectedItem();
+        String fromValSelectedItem =((ExchangeRate) fromVal.getSelectedItem()).getCurrencyName(); // changed from String to Exchange Rate for Ex.2.5
+        String toValSelectedItem =((ExchangeRate) toVal.getSelectedItem()).getCurrencyName();
 
         double result = this.exchangeRateDatabase.convert(inputVal, fromValSelectedItem, toValSelectedItem);
 
