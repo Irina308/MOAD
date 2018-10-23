@@ -1,15 +1,13 @@
 package com.irina.inf3moad;
 
-import android.service.autofill.CharSequenceTransformation;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
+import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -39,10 +37,16 @@ public class MainActivity extends AppCompatActivity {
         Spinner fromVal_spn = findViewById(R.id.fromVal_spn);
         Spinner toVal_spn = findViewById(R.id.toVal_spn);
 
+        /* Exercise 2.2
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, this.exchangeRateDatabase.getCurrencies());
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         fromVal_spn.setAdapter(spinnerArrayAdapter);
         toVal_spn.setAdapter(spinnerArrayAdapter);
+        */
+
+        ExchangeRateAdapter myAdapter = new ExchangeRateAdapter(Arrays.asList(this.exchangeRateDatabase.getExchangeRates()));
+        fromVal_spn.setAdapter(myAdapter);
+        toVal_spn.setAdapter(myAdapter);
     }
 }

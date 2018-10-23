@@ -1,14 +1,11 @@
 package com.irina.inf3moad;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Spinner;
+
+import java.util.Arrays;
 
 public class CurrencyListActivity extends AppCompatActivity {
 
@@ -31,6 +28,8 @@ public class CurrencyListActivity extends AppCompatActivity {
         });
         */
 
+
+
         initList();
     }
 
@@ -38,9 +37,13 @@ public class CurrencyListActivity extends AppCompatActivity {
     private void initList(){
         ListView currencyListView = findViewById(R.id.currencies_lst);
 
-        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, this.exchangeRateDatabase.getCurrencies());
+        /*ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, this.exchangeRateDatabase.getCurrencies());
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
 
         currencyListView.setAdapter(spinnerArrayAdapter);
+         */
+
+        ExchangeRateAdapter myAdapter = new ExchangeRateAdapter(Arrays.asList(this.exchangeRateDatabase.getExchangeRates()));
+        currencyListView.setAdapter(myAdapter);
     }
 }

@@ -79,4 +79,10 @@ public class ExchangeRateDatabase {
     public double convert(double value, String currencyFrom, String currencyTo) {
         return value / CURRENCIES_MAP.get(currencyFrom) * CURRENCIES_MAP.get(currencyTo);
     }
+
+    //Manually added;
+    public ExchangeRate[] getExchangeRates() {
+        return this.RATES;
+    }
+
 }
