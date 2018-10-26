@@ -18,38 +18,37 @@
 
         android:text="From value in "
         app:layout_constraintRight_toLeftOf="@+id/fromVal_spn"
-        app:layout_constraintBaseline_toBaselineOf="@id/fromVal_spn"
 
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/input_txt"
+        app:layout_constraintBottom_toTopOf="@id/to_val_in_txt"
         />
 
     <Spinner
         android:id="@+id/fromVal_spn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="0.7"
 
-
-
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toRightOf="@id/from_val_in_txt"
+        app:layout_constraintRight_toLeftOf="@id/input_txt"
         app:layout_constraintBaseline_toBaselineOf="@id/from_val_in_txt"
-        app:layout_constraintBottom_toTopOf="@id/input_txt"
+        app:layout_constraintBottom_toTopOf="@id/toVal_spn"
 
         />
 
     <EditText
         android:id="@+id/input_txt"
         android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
         android:ems="10"
         android:inputType="numberDecimal"
 
-        android:layout_width="match_parent"
-        app:layout_constraintTop_toBottomOf="@+id/fromVal_spn"
+        app:layout_constraintBottom_toTopOf="@+id/calc_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/fromVal_spn"
+
         android:layout_marginTop="8dp"
 
-         />
+        />
 
     <TextView
         android:id="@+id/to_val_in_txt"
@@ -61,16 +60,18 @@
         android:text="To value in "
         app:layout_constraintRight_toLeftOf="@+id/toVal_spn"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/input_txt"
+        app:layout_constraintTop_toBottomOf="@id/from_val_in_txt"
         />
 
     <Spinner
         android:id="@+id/toVal_spn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/input_txt"
+
         android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fromVal_spn"
+       app:layout_constraintLeft_toRightOf="@id/to_val_in_txt"
+        app:layout_constraintRight_toLeftOf="@id/calc_btn"
 
         />
 
@@ -82,8 +83,10 @@
         android:layout_marginTop="8dp"
         android:onClick="calculateOnClick"
         android:text="Calculate"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toVal_spn" />
+
+        app:layout_constraintLeft_toRightOf="@id/toVal_spn"
+        app:layout_constraintRight_toLeftOf="@id/result_txt"
+        app:layout_constraintTop_toBottomOf="@id/input_txt" />
 
 
     <TextView
@@ -98,8 +101,7 @@
         app:layout_constraintBaseline_toBaselineOf="@id/calc_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/calc_btn"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toVal_spn" />
+        app:layout_constraintTop_toBottomOf="@id/input_txt" />
 
 
 </android.support.constraint.ConstraintLayout>
