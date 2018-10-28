@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -39,8 +40,15 @@ public class ExchangeRateAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.list_entry, null, false); //R.layout.list_entry == meine neu erstellte list_entry.xml
         }
 
+
         TextView currencyNameTextView = convertView.findViewById(R.id.currency_name_txt);
         currencyNameTextView.setText(entry.getCurrencyName());
+
+        String flagDrawableName = "flag_"+ entry.getCurrencyName().toLowerCase();
+
+        ImageView flagIconImageView = convertView.findViewById(R.id.flag_ico);
+        int identifier = convertView.getResources().getIdentifier(flagDrawableName, "drawable", context.getPackageName()); // "com.irina.inf3moad:drawable/" null null
+        flagIconImageView.setImageResource(identifier);
 
         TextView currencyRateTextView = convertView.findViewById(R.id.currency_value_txt);
         currencyRateTextView.setText(String.valueOf(entry.getRateForOneEuro()));
