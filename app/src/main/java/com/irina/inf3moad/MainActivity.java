@@ -2,6 +2,8 @@ package com.irina.inf3moad;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -18,7 +20,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         this.initSpinner();
+
+        Toolbar cToolbar = (Toolbar) findViewById(R.id.c_toolbar);
+        setSupportActionBar(cToolbar);
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.curr_conv_menu, menu);
+        return true;
+    }
+
+
 
     public void calculateOnClick (View view) {
         Spinner fromVal = findViewById(R.id.fromVal_spn);
