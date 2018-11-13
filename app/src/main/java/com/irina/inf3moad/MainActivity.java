@@ -2,7 +2,9 @@ package com.irina.inf3moad;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
     ExchangeRateDatabase exchangeRateDatabase = new ExchangeRateDatabase();
 
+    ShareActionProvider shareActionProvider;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,7 +33,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.curr_conv_menu, menu);
+        MenuItem shareitem = menu.findItem(R.id.action_share);
+        shareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareitem);
+        setShareText(null);
         return true;
+    }
+
+    private void setShareText(String text) {
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        if (text != null)
+            {shareIntent.putExtra(Intent.EXTRA_TEXT, text);}
+        shareActionProvider.setShareIntent(shareIntent);
     }
 
     @Override
@@ -58,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
         double result = this.exchangeRateDatabase.convert(inputVal, fromValSelectedItem, toValSelectedItem);
 
         ((TextView) findViewById(R.id.result_txt)).setText(String.valueOf(result));
+        setShareText(inputVal + " " + fromValSelectedItem + " are " + result + " " + toValSelectedItem );
     }
 
     private void initSpinner(){
