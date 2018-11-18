@@ -12,7 +12,7 @@ public class ExchangeRateDatabase {
     // Exchange rates to EURO - price for 1 Euro
     private final static ExchangeRate[] RATES = {
             new ExchangeRate("EUR", "Bruxelles", 1.0),
-            new ExchangeRate("USD", "Washington", 1.0845),
+            new ExchangeRate("USD", "Washington", 1.111),
             new ExchangeRate("JPY", "Tokyo", 130.02),
             new ExchangeRate("BGN", "Sofia", 1.9558),
             new ExchangeRate("CZK", "Prague", 27.473),
@@ -87,5 +87,14 @@ public class ExchangeRateDatabase {
      */
     public double convert(double value, String currencyFrom, String currencyTo) {
         return value / getExchangeRate(currencyFrom) * getExchangeRate(currencyTo);
+    }
+
+    public void setExchangeRate(ExchangeRate updatedRate){
+        for (ExchangeRate rate : RATES) {
+            if (rate.getCurrencyName().equals(updatedRate.getCurrencyName())) {
+                rate.setRateForOneEuro(updatedRate.getRateForOneEuro());
+            }
+        }
+
     }
 }

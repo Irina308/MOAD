@@ -8,8 +8,15 @@
         app:actionProviderClass="android.support.v7.widget.ShareActionProvider"
         />
 
-    <item android:title="Curr. List"
+    <item
         android:id="@+id/curr_entry"
+        android:title="Curr. List"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/refresh_rates"
+        android:title="Refresh rates"
         app:showAsAction="never"
         />
 

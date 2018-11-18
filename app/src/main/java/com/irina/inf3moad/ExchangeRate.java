@@ -5,10 +5,15 @@ public class ExchangeRate {
     private double rateForOneEuro;
     private String capital;
 
+
     public ExchangeRate(String currencyName, String capital, double rateForOneEuro) {
         this.currencyName = currencyName;
         this.rateForOneEuro = rateForOneEuro;
         this.capital = capital;
+    }
+
+    public void setRateForOneEuro(double rateForOneEuro) {
+        this.rateForOneEuro = rateForOneEuro;
     }
 
     public String getCurrencyName() {
