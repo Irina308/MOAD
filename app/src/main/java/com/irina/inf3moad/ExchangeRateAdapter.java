@@ -25,6 +25,15 @@ public class ExchangeRateAdapter extends BaseAdapter {
         return data.get(position);
     }
 
+    public int getPosition(String currName){
+        for (int i = 0; i < data.size(); i++) {
+             if(currName.equals(data.get(i).getCurrencyName())){
+                 return i;
+             }
+        }
+        return 0;
+    }
+
     @Override
     public long getItemId(int position) {
         return position;

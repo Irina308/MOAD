@@ -1,6 +1,8 @@
 package com.irina.inf3moad;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.view.MenuItemCompat;
@@ -15,6 +17,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
@@ -59,27 +62,28 @@ public class MainActivity extends AppCompatActivity {
     private void setShareText(String text) {
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
-        if (text != null)
-            {shareIntent.putExtra(Intent.EXTRA_TEXT, text);}
+        if (text != null) {
+            shareIntent.putExtra(Intent.EXTRA_TEXT, text);
+        }
         shareActionProvider.setShareIntent(shareIntent);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.curr_entry:
                 Intent currListIntent = new Intent(MainActivity.this, CurrencyListActivity.class);
                 startActivity(currListIntent);
                 return true;
 
             case R.id.refresh_rates:
-               // List<ExchangeRate> updatedRates = this.queryRates();
+                // List<ExchangeRate> updatedRates = this.queryRates();
 
                 ExchangeRateUpdateRunnable runnable = new ExchangeRateUpdateRunnable(this, this.exchangeRateDatabase);
                 new Thread(runnable).start();
 
-              //  this.updateCurrencies(updatedRates);
-              //  this.myAdapter.notifyDataSetChanged(); // Falls die Werte sich nicht automatisch updaten
+                //  this.updateCurrencies(updatedRates);
+                //  this.myAdapter.notifyDataSetChanged(); // Falls die Werte sich nicht automatisch updaten
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -87,21 +91,56 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void calculateOnClick (View view) {
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = prefs.edit();
+
+        String sourceCurrency = ((ExchangeRate)  ((Spinner)findViewById(R.id.fromVal_spn)).getSelectedItem()).getCurrencyName();
+        String targetCurrency = ((ExchangeRate)  ((Spinner)findViewById(R.id.toVal_spn)).getSelectedItem()).getCurrencyName();
+        String inputVal = ((TextView) findViewById(R.id.input_txt)).getText().toString();
+
+        editor.putString("SourceCurrency", sourceCurrency);
+        editor.putString("TargetCurrency", targetCurrency);
+        editor.putString("InputValue", inputVal);
+        editor.apply();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
+
+        Spinner sourceCurrency = findViewById(R.id.fromVal_spn);
+        Spinner targetCurrency = findViewById(R.id.toVal_spn);
+        TextView inputVal = ((TextView) findViewById(R.id.input_txt));
+
+        sourceCurrency.setSelection(((ExchangeRateAdapter)sourceCurrency.getAdapter()).getPosition(prefs.getString("SourceCurrency", "EUR")));
+        targetCurrency.setSelection(((ExchangeRateAdapter)targetCurrency.getAdapter()).getPosition(prefs.getString("TargetCurrency", "EUR")));
+        inputVal.setText(prefs.getString("InputValue", "0"));
+
+
+    }
+
+    public void calculateOnClick(View view) {
         Spinner fromVal = findViewById(R.id.fromVal_spn);
         Spinner toVal = findViewById(R.id.toVal_spn);
         double inputVal = Double.parseDouble(((EditText) findViewById(R.id.input_txt)).getText().toString());
 
-        String fromValSelectedItem =((ExchangeRate) fromVal.getSelectedItem()).getCurrencyName(); // changed from String to Exchange Rate for Ex.2.5
-        String toValSelectedItem =((ExchangeRate) toVal.getSelectedItem()).getCurrencyName();
+        String fromValSelectedItem = ((ExchangeRate) fromVal.getSelectedItem()).getCurrencyName(); // changed from String to Exchange Rate for Ex.2.5
+        String toValSelectedItem = ((ExchangeRate) toVal.getSelectedItem()).getCurrencyName();
 
         double result = this.exchangeRateDatabase.convert(inputVal, fromValSelectedItem, toValSelectedItem);
 
         ((TextView) findViewById(R.id.result_txt)).setText(String.valueOf(result));
-        setShareText(inputVal + " " + fromValSelectedItem + " are " + result + " " + toValSelectedItem );
+        setShareText(inputVal + " " + fromValSelectedItem + " are " + result + " " + toValSelectedItem);
     }
 
-    private void initSpinner(){
+    private void initSpinner() {
         Spinner fromVal_spn = findViewById(R.id.fromVal_spn);
         Spinner toVal_spn = findViewById(R.id.toVal_spn);
 
@@ -135,8 +174,10 @@ public class MainActivity extends AppCompatActivity {
                 String name = parser.getName();
                 try {
                     String attributeName = parser.getAttributeName(0);
-                } catch (Exception e) {};
-                if(eventType == XmlPullParser.START_TAG && "Cube".equals(parser.getName()) && parser.getAttributeValue(null, "currency") != null) {
+                } catch (Exception e) {
+                }
+                ;
+                if (eventType == XmlPullParser.START_TAG && "Cube".equals(parser.getName()) && parser.getAttributeValue(null, "currency") != null) {
                     ExchangeRate rate = new ExchangeRate(
                             parser.getAttributeValue(null, "currency"),
                             null,
@@ -147,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
                 eventType = parser.next();
             }
 
-        } catch (Exception ex){
+        } catch (Exception ex) {
             Log.e("MovieApp", "cant query omdb");
             ex.printStackTrace();
         }
