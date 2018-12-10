@@ -38,8 +38,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
+        //StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        //StrictMode.setThreadPolicy(policy);
 
         this.initSpinner();
 
@@ -73,8 +73,12 @@ public class MainActivity extends AppCompatActivity {
                 return true;
 
             case R.id.refresh_rates:
-                List<ExchangeRate> updatedRates = this.queryRates();
-                this.updateCurrencies(updatedRates);
+               // List<ExchangeRate> updatedRates = this.queryRates();
+
+                ExchangeRateUpdateRunnable runnable = new ExchangeRateUpdateRunnable(this, this.exchangeRateDatabase);
+                new Thread(runnable).start();
+
+              //  this.updateCurrencies(updatedRates);
               //  this.myAdapter.notifyDataSetChanged(); // Falls die Werte sich nicht automatisch updaten
                 return true;
             default:
@@ -114,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
         toVal_spn.setAdapter(myAdapter);
     }
 
-    private List<ExchangeRate> queryRates() {
+    public List<ExchangeRate> queryRates() {
         String queryString = "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml";
         List<ExchangeRate> ml = new ArrayList<>();
 
@@ -150,9 +154,5 @@ public class MainActivity extends AppCompatActivity {
         return ml;
     }
 
-    private void updateCurrencies(List<ExchangeRate> updatedRates) {
-        for (ExchangeRate updatedRate : updatedRates) {
-            this.exchangeRateDatabase.setExchangeRate(updatedRate);
-        }
-    }
+
 }
