@@ -25,7 +25,7 @@ public class ExchangeRateUpdateRunnable implements Runnable {
 
             ///// Sleep, just for testing purpose
             try {
-                Thread.sleep(5000);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

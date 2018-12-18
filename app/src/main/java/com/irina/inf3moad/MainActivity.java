@@ -103,9 +103,21 @@ public class MainActivity extends AppCompatActivity {
         String targetCurrency = ((ExchangeRate)  ((Spinner)findViewById(R.id.toVal_spn)).getSelectedItem()).getCurrencyName();
         String inputVal = ((TextView) findViewById(R.id.input_txt)).getText().toString();
 
+
         editor.putString("SourceCurrency", sourceCurrency);
         editor.putString("TargetCurrency", targetCurrency);
         editor.putString("InputValue", inputVal);
+
+        ExchangeRate[] exchangeRates = exchangeRateDatabase.getExchangeRates();
+        for (ExchangeRate exchangeRate : exchangeRates) {
+            editor.putString(exchangeRate.getCurrencyName(), String.valueOf(exchangeRate.getRateForOneEuro()));
+        }
+        // FAKE EXCHANGERATE FOR TEST PURPOSES:
+        exchangeRateDatabase.setExchangeRate(new ExchangeRate("JPY", "", 999D));
+        ///
+
+        editor.putString("VeryFirstApplicationStart", "false");
+
         editor.apply();
     }
 
@@ -117,12 +129,21 @@ public class MainActivity extends AppCompatActivity {
 
         Spinner sourceCurrency = findViewById(R.id.fromVal_spn);
         Spinner targetCurrency = findViewById(R.id.toVal_spn);
-        TextView inputVal = ((TextView) findViewById(R.id.input_txt));
+        TextView inputVal = findViewById(R.id.input_txt);
 
         sourceCurrency.setSelection(((ExchangeRateAdapter)sourceCurrency.getAdapter()).getPosition(prefs.getString("SourceCurrency", "EUR")));
         targetCurrency.setSelection(((ExchangeRateAdapter)targetCurrency.getAdapter()).getPosition(prefs.getString("TargetCurrency", "EUR")));
         inputVal.setText(prefs.getString("InputValue", "0"));
 
+
+        //Take predefined values from Exch.RateDatabase at the very first start of the application start
+        if("false".equals(prefs.getString("VeryFirstApplicationStart", "true"))){
+            ExchangeRate[] exchangeRates = exchangeRateDatabase.getExchangeRates();
+            for (ExchangeRate exchangeRate : exchangeRates) {
+                exchangeRate.setRateForOneEuro(Double.valueOf(prefs.getString(exchangeRate.getCurrencyName(), "1")));
+                exchangeRateDatabase.setExchangeRate(exchangeRate);
+            }
+        }
 
     }
 

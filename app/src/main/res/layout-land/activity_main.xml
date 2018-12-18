@@ -115,7 +115,6 @@
         app:layout_constraintEnd_toStartOf="@id/result_txt"
         app:layout_constraintTop_toBottomOf="@id/input_txt"
         app:layout_constraintBaseline_toBaselineOf="@id/result_txt"
-
         />
 
 
